@@ -26,12 +26,13 @@ The server loads the key only into its Node.js process. The static server serves
 
 - Editable, synthetic five-person team table with skills, daily capacity, committed hours, and availability confirmation dates.
 - Manual request form with manager-entered and confirmed effort estimates.
-- Rule-based availability matching and a per-person calculation breakdown:
+- Rule-based aggregate capacity matching and a per-person calculation breakdown:
 
-  `daily capacity x weekdays - committed work within selected dates = available hours`
+  `daily capacity x weekdays - committed work within selected dates = estimated remaining capacity within selected dates`
 
-- Required recommitment review when request dates change; unfinished committed work is subtracted once.
-- Human manager decision step that selects a candidate or puts a request on hold. It never assigns work automatically.
+- Required committed-hours review when request dates change; unfinished committed work is subtracted once. Availability information is considered current only when its last confirmation falls within the configured freshness window before the request start date.
+- Human manager decision step that can record a hold before capacity is assessed, as long as the manager supplies a task description and decision note. Candidate selection requires a valid, current capacity check plus an unchecked-by-default manager confirmation that the candidate's schedule and dependencies allow completion before the deadline. It never assigns work automatically.
+- Qualifying people are labelled **Potential candidates**, not confirmed availability. Clear separation between **Capacity not assessed** (no current check) and **No potential candidate meets aggregate criteria** (a completed check found no qualified person). Changing request, team, commitment, date, or selected-candidate inputs resets the schedule/dependency confirmation and invalidates an earlier capacity assessment where applicable; a hold remains available.
 - Optional AI-assisted request interpretation using the OpenAI Responses API and Structured Outputs. It extracts stated deliverables, linked quantities, deadlines, materials, missing information, and questions with verbatim evidence excerpts.
 - AI drafts remain editable and require manager approval before selected supported facts can be copied into the manual form. Effort estimates and required skills are never copied from AI output.
 - Ambiguous dates such as `Friday` remain unchanged and require an exact-calendar-date question. No date is inferred.
@@ -48,9 +49,11 @@ Facts are shown as supported only when their supplied excerpt is an exact, conti
 
 OpenAI requests may incur token charges. Check current OpenAI pricing and your organisation's data-handling requirements before sending real client material.
 
+Capacity is an aggregate estimate for the selected dates. It does not check daily schedules, leave, holidays, time blocks, dependencies, or whether the estimated hours are actually usable before the deadline. Capacity alone does not establish that a client request should be accepted; a manager must manually check the selected potential candidate's schedule and dependencies before recording a candidate-selection decision.
+
 TeamFit does not verify that an extracted statement is true beyond its excerpt, inspect attachments, infer dates, infer approvals, create effort estimates, alter staff skills or availability, allocate work, assign people, or send messages. It is a review aid, not an assignment system.
 
-## Tests
+## Automated tests
 
 Run the offline test suite:
 
@@ -58,7 +61,13 @@ Run the offline test suite:
 node --test test\logic.test.js test\ai.test.js
 ```
 
-The tests cover normal, insufficient-capacity, missing-information, and date-boundary capacity cases; evidence validation; ambiguous-deadline questions; selected AI-copy behavior; source approval invalidation; and a clearly labeled mocked API failure path. They do not call OpenAI.
+The offline Node tests cover normal, insufficient-capacity, missing-information, and date-boundary capacity cases; committed-hours review; hold and candidate-decision validation including schedule/dependency confirmation; evidence validation; ambiguous-deadline questions; selected AI-copy behavior; source approval invalidation; and a clearly labeled mocked API failure path. They do not call OpenAI.
+
+## Verification status
+
+- **Automated:** The test command above exercises the rule-based logic and isolated UI-state helpers. It does not make an OpenAI request.
+- **Browser checks:** The app is intended to be opened locally at `http://localhost:3000` after starting the server. Browser interactions should be reviewed manually, including capacity-result invalidation, hold decisions, and the schedule/dependency confirmation before selecting a potential candidate.
+- **Not yet verified:** No paid live OpenAI interpretation request is run by the automated suite. The project has not been independently user-tested or validated for business outcomes, time savings, real staff schedules, leave, holidays, or external scheduling integrations.
 
 ## Repository safety
 
