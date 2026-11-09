@@ -24,6 +24,8 @@ The server loads the key only into its Node.js process. The static server serves
 
 ## Current features
 
+- **Request Review workspace:** TeamFit opens on one current request. A slim status bar shows the request name, its current review status, and the next action. On desktop, the request summary and unresolved items are on the left while the manager's decision controls are on the right; staffing and workload details are below. This responds to TA feedback that the prototype should feel like a manager's daily work tool rather than a presentation. On narrow screens, the decision controls follow unresolved items.
+- **Clarify and hold workflow:** The summary identifies unconfirmed request details before staffing. **Prepare hold note** creates an editable draft with separate client questions and internal checks. Adding the draft appends it to the decision note, preserving any text already there. Preparing or adding a draft does not save anything: the manager must still explicitly select **Put this request on hold** and record the session-only decision.
 - Editable, synthetic five-person team table with skills, daily capacity, committed hours, and availability confirmation dates.
 - Manual request form with manager-entered and confirmed effort estimates.
 - Rule-based aggregate capacity matching and a per-person calculation breakdown:
@@ -58,10 +60,18 @@ TeamFit does not verify that an extracted statement is true beyond its excerpt, 
 Run the offline test suite:
 
 ```powershell
-node --test test\logic.test.js test\ai.test.js
+node --test test\logic.test.js test\ai.test.js test\decision.test.js test\review.test.js test\hold-note.test.js
 ```
 
 The offline Node tests cover normal, insufficient-capacity, missing-information, and date-boundary capacity cases; committed-hours review; hold and candidate-decision validation including schedule/dependency confirmation; evidence validation; ambiguous-deadline questions; selected AI-copy behavior; source approval invalidation; and a clearly labeled mocked API failure path. They do not call OpenAI.
+
+## Request Review workflow
+
+1. Review the current request summary and the unresolved items.
+2. Use **View original client message** to inspect the source text, or expand **Edit request details** to correct confirmed manual information.
+3. When information is incomplete, use **Prepare hold note** to draft client questions and internal checks. Review or edit the draft, then add it to the decision note if useful.
+4. To save a hold for the current browser session, select **Put this request on hold**, provide a non-empty decision note, and select **Record decision for this session**. Holds do not require an estimate, skill, dates, or a capacity check.
+5. Only after the request inputs are confirmed should the manager review committed work and run the aggregate capacity check. Potential candidates are not assignments; a candidate decision additionally requires the manager's schedule/dependency confirmation.
 
 ## Verification status
 
