@@ -20,7 +20,8 @@
         <section class="request-summary" aria-labelledby="review-title">
           <div class="section-heading"><div><h2 id="review-title">Request summary</h2><p id="summary-description">Create campaign graphics for the spring launch.</p></div><span class="synthetic">Synthetic example</span></div>
           <dl class="summary-grid"><div><dt>Required skill</dt><dd id="summary-skill">Not confirmed</dd></div><div><dt>Effort</dt><dd id="summary-effort">Not confirmed</dd></div><div><dt>Dates</dt><dd id="summary-dates">Not confirmed</dd></div><div><dt>Materials</dt><dd id="summary-materials">Not confirmed</dd></div></dl>
-          <a id="open-source-message" class="source-link" href="#original-message">View original client message</a>
+          <div class="summary-actions"><a id="open-source-message" class="source-link" href="#original-message">View original client message</a><button id="copy-review-summary" type="button" class="text-button">Copy review summary</button></div><p id="copy-review-status" class="copy-status" aria-live="polite"></p>
+          <div class="demo-tools"><label>Load a synthetic demo scenario<select id="demo-scenario"><option value="">Choose a scenario</option><option value="missing">Missing information / hold</option><option value="candidate">Potential candidate</option><option value="insufficient">Insufficient capacity</option><option value="friday">Ambiguous Friday</option></select></label><button id="load-demo-scenario" type="button" class="text-button">Load scenario</button></div>
         </section>
 
         <section class="blockers-panel" aria-labelledby="blockers-heading">
@@ -66,7 +67,7 @@
       </aside>
     </section>
 
-    <details class="request-editor">
+    <details id="request-editor" class="request-editor">
       <summary>Edit request details</summary>
       <div class="request-editor-content">
         <p class="hint">Use confirmed information only. Unknown fields can remain blank while you record a hold.</p>

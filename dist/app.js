@@ -2,7 +2,7 @@
   const { checkAvailability } = window.TeamFitLogic;
   const review = window.TeamFitReview.createReviewState();
   const { validateManagerDecision, createDecisionMessageState, createScheduleConfirmationState } = window.TeamFitDecision;
-  const { deriveReviewState } = window.TeamFitReviewState;
+  const { deriveReviewState, buildReviewSummary, getDemoScenario, fourWeekdayRange } = window.TeamFitReviewState;
   const { createHoldDraft, formatHoldDraft } = window.TeamFitHoldNote;
   const today = new Date().toISOString().slice(0, 10);
   const plusDays = (days) => { const date = new Date(`${today}T00:00:00`); date.setDate(date.getDate() + days); return date.toISOString().slice(0, 10); };
@@ -13,6 +13,7 @@
     { id: 4, name: 'Owen Martin', skills: 'Proofreading, Quality review', dailyCapacity: 5, committedHours: 12, lastConfirmed: '' },
     { id: 5, name: 'Sofia Alvarez', skills: 'Graphic design, Illustration', dailyCapacity: 6, committedHours: 30, lastConfirmed: plusDays(-2) }
   ];
+  const baselineCommittedHours = Object.fromEntries(team.map((member) => [member.id, member.committedHours]));
   let latestResults = [], activeDraft = null, hasCurrentCapacityCheck = false;
   const $ = (selector) => document.querySelector(selector);
   const esc = (value) => String(value || '').replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
@@ -71,6 +72,27 @@
     note.focus();
   }
 
+  function copyReviewSummary() {
+    const state = deriveReviewState(currentReview());
+    const capacityState = hasCurrentCapacityCheck ? `${latestResults.filter((item) => item.status === 'qualified').length} potential candidate(s) under the aggregate rules.` : 'Capacity has not been assessed.';
+    const text = buildReviewSummary({ title: currentReview().title, status: state.status, nextAction: state.nextAction, blockers: state.blockers, decisionNote: $('#decision-note').value, capacityState });
+    const status = $('#copy-review-status'), done = () => { status.textContent = 'Review summary copied. It contains no team-table data.'; };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(done).catch(() => { status.textContent = 'Could not copy automatically. Select and copy the manager note instead.'; });
+    else status.textContent = 'Automatic copy is unavailable in this browser.';
+  }
+
+  function loadDemoScenario() {
+    const scenario = $('#demo-scenario').value;
+    if (!scenario) return;
+    const dates = scenario === 'candidate' ? fourWeekdayRange(today) : { startDate: plusDays(1), deadline: plusDays(5) };
+    const preset = getDemoScenario(scenario, dates.startDate, dates.deadline), values = preset.request;
+    team.forEach((member) => { member.committedHours = baselineCommittedHours[member.id]; });
+    Object.entries(preset.committedHoursByMember || {}).forEach(([id, hours]) => { const member = team.find((person) => person.id === Number(id)); if (member) member.committedHours = hours; });
+    renderTeam(); $('#description').value = values.description; $('#skill').value = values.skill; $('#hours').value = values.hours; $('#confirm-hours').value = values.hours; $('#start-date').value = values.startDate; $('#deadline').value = values.deadline; $('#materials').value = values.materials; $('#client-request').value = values.source; $('#decision-note').value = ''; $('#hold').checked = false; commitmentConfirmation.checked = false; updateRangeLabels(); invalidateCapacityAssessment('Synthetic scenario loaded. Review the displayed inputs before checking capacity or recording a hold.');
+    if (scenario === 'candidate' || scenario === 'insufficient') { commitmentConfirmation.checked = true; confirmedRangeKey = rangeKey(); }
+    $('#request-editor').open = true;
+  }
+
   function renderDecisionState() {
     const candidate = $('#candidate'), qualified = latestResults.filter((item) => item.status === 'qualified');
     resetScheduleConfirmation();
@@ -118,7 +140,7 @@
   $('#approve-ai-draft').addEventListener('change', (event) => { const valid = event.target.checked && activeDraft && review.approve($('#client-request').value.trim()); $('#copy-ai-draft').disabled = !valid; if (!valid) event.target.checked = false; });
   $('#copy-ai-draft').addEventListener('click', () => { const result = TeamFitReview.copySelectedFacts({ draft: activeDraft || {}, selectedFacts: [...$('#draft-facts').querySelectorAll('input[type="checkbox"][data-kind]:checked')].map((input) => ({ kind: input.dataset.kind, index: Number(input.dataset.index) })), existingDescription: $('#description').value, allowReplace: $('#replace-description').checked, approved: Boolean(activeDraft && review.isApproved($('#client-request').value.trim())) }); $('#copy-status').textContent = result.message; $('#copy-status').classList.toggle('error-message', !result.changed); if (!result.changed) return; $('#description').value = result.description; invalidateCapacityAssessment(); if (result.deadline) { $('#deadline').value = result.deadline; $('#deadline').dispatchEvent(new Event('change')); } });
 
-  $('#prepare-hold-note').addEventListener('click', prepareHoldNote); $('#add-hold-draft').addEventListener('click', addHoldDraftToNote);
+  $('#prepare-hold-note').addEventListener('click', prepareHoldNote); $('#add-hold-draft').addEventListener('click', addHoldDraftToNote); $('#copy-review-summary').addEventListener('click', copyReviewSummary); $('#load-demo-scenario').addEventListener('click', loadDemoScenario);
   $('#open-source-message').addEventListener('click', (event) => { event.preventDefault(); const source = $('#original-message'); source.open = true; source.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   $('#decision-note').addEventListener('input', clearDecisionMessage); $('#hold').addEventListener('change', () => { resetScheduleConfirmation(); updateScheduleConfirmation(); clearDecisionMessage(); }); $('#candidate').addEventListener('change', () => { resetScheduleConfirmation(); updateScheduleConfirmation(); clearDecisionMessage(); }); $('#confirm-schedule').addEventListener('change', () => { scheduleConfirmationState.set($('#confirm-schedule').checked); clearDecisionMessage(); });
   [$('#request-title'), $('#description'), $('#skill'), $('#hours'), $('#confirm-hours'), $('#materials')].forEach((field) => field.addEventListener('input', () => invalidateCapacityAssessment()));

@@ -26,6 +26,7 @@ The server loads the key only into its Node.js process. The static server serves
 
 - **Request Review workspace:** TeamFit opens on one current request. A slim status bar shows the request name, its current review status, and the next action. On desktop, the request summary and unresolved items are on the left while the manager's decision controls are on the right; staffing and workload details are below. This responds to TA feedback that the prototype should feel like a manager's daily work tool rather than a presentation. On narrow screens, the decision controls follow unresolved items.
 - **Clarify and hold workflow:** The summary identifies unconfirmed request details before staffing. **Prepare hold note** creates an editable draft with separate client questions and internal checks. Adding the draft appends it to the decision note, preserving any text already there. Preparing or adding a draft does not save anything: the manager must still explicitly select **Put this request on hold** and record the session-only decision.
+- **Demonstration support:** Local synthetic scenarios cover missing information, a potential candidate, insufficient capacity, and an ambiguous Friday request. A copyable review summary helps a manager share the current status and follow-up without exposing the editable team table.
 - Editable, synthetic five-person team table with skills, daily capacity, committed hours, and availability confirmation dates.
 - Manual request form with manager-entered and confirmed effort estimates.
 - Rule-based aggregate capacity matching and a per-person calculation breakdown:
@@ -77,6 +78,7 @@ The offline Node tests cover normal, insufficient-capacity, missing-information,
 
 - **Automated:** The test command above exercises the rule-based logic and isolated UI-state helpers. It does not make an OpenAI request.
 - **Browser checks:** The app is intended to be opened locally at `http://localhost:3000` after starting the server. Browser interactions should be reviewed manually, including capacity-result invalidation, hold decisions, and the schedule/dependency confirmation before selecting a potential candidate.
+- **Browser regression walkthrough:** [test/browser-checklist.md](test/browser-checklist.md) provides a repeatable local checklist for the hold, scenario, capacity, and narrow-layout flows.
 - **Not yet verified:** No paid live OpenAI interpretation request is run by the automated suite. The project has not been independently user-tested or validated for business outcomes, time savings, real staff schedules, leave, holidays, or external scheduling integrations.
 
 ## Repository safety
