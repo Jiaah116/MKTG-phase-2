@@ -79,7 +79,7 @@ The offline Node tests cover normal, insufficient-capacity, missing-information,
 - **Automated:** The test command above exercises the rule-based logic and isolated UI-state helpers. It does not make an OpenAI request.
 - **Browser checks:** The app is intended to be opened locally at `http://localhost:3000` after starting the server. Browser interactions should be reviewed manually, including capacity-result invalidation, hold decisions, and the schedule/dependency confirmation before selecting a potential candidate.
 - **Browser regression walkthrough:** [test/browser-checklist.md](test/browser-checklist.md) provides a repeatable local checklist for the hold, scenario, capacity, and narrow-layout flows.
-- **Teammate testing:** [docs/teamfit-teammate-guide.md](docs/teamfit-teammate-guide.md) explains how a participant can compare a manual workflow with TeamFit and provide feedback. Case materials, assignments, response forms, and slides are shared separately by the test organizer.
+- **Teammate testing:** [docs/teamfit-teammate-guide.md](docs/teamfit-teammate-guide.md) explains how a participant can compare a manual workflow with TeamFit and provide feedback. Case materials, assignments, response forms, and slides are shared separately by the test organizer. [docs/teamfit-stakeholder-walkthrough.md](docs/teamfit-stakeholder-walkthrough.md) provides a separate guide for an agency or project-manager walkthrough.
 - **Not yet verified:** No paid live OpenAI interpretation request is run by the automated suite. The project has not been independently user-tested or validated for business outcomes, time savings, real staff schedules, leave, holidays, or external scheduling integrations.
 
 ## Repository safety

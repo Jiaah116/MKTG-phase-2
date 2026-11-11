@@ -31,7 +31,15 @@ Please return the following for each run:
 
 If the organizer also assigns a workload update, record that time separately and note whether you had to enter the same information twice.
 
-## 2. Review the demo slides after testing
+## 2. Explain “Potential candidate” before looking at the slides
+
+After completing the TeamFit capacity-check scenario, but before receiving help or viewing the demo slides, explain this phrase in your own words:
+
+> What does “Potential candidate” mean in TeamFit?
+
+Please include whether you think it means an assignment, a confirmed schedule, or a client commitment. The test organizer should record your answer as written or spoken. This check helps the team learn whether the screen clearly communicates that a potential candidate still needs manager review.
+
+## 3. Review the demo slides after testing
 
 The demo shows two requests: a spring launch graphics request with missing information, and a complete request that can proceed to a capacity check.
 
