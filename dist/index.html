@@ -8,11 +8,12 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#request-review">Skip to request review</a>
   <header class="topbar"><div class="brand"><span class="brand-mark">TF</span><span>TeamFit</span></div><span class="prototype-label">Local prototype / synthetic data</span></header>
-  <main>
+  <main id="request-review" tabindex="-1">
     <section class="review-bar" aria-labelledby="review-title">
-      <div><span class="overline">Current request</span><h1 id="request-title-display">Spring launch graphics</h1></div>
-      <div class="review-state"><strong id="request-status" class="status status-warning">Needs clarification</strong><span id="next-action">Put the request on hold and follow up on the unresolved details.</span></div>
+      <div><p class="request-label">Current request</p><h1 id="request-title-display">Spring launch graphics</h1></div>
+      <div class="review-state"><strong id="request-status" class="status status-warning">Needs clarification</strong><div class="next-action"><span>Next action</span><strong id="next-action">Put the request on hold and follow up on the unresolved details.</strong></div></div>
     </section>
 
     <section class="workspace-grid">
@@ -20,8 +21,8 @@
         <section class="request-summary" aria-labelledby="review-title">
           <div class="section-heading"><div><h2 id="review-title">Request summary</h2><p id="summary-description">Create campaign graphics for the spring launch.</p></div><span class="synthetic">Synthetic example</span></div>
           <dl class="summary-grid"><div><dt>Required skill</dt><dd id="summary-skill">Not confirmed</dd></div><div><dt>Effort</dt><dd id="summary-effort">Not confirmed</dd></div><div><dt>Dates</dt><dd id="summary-dates">Not confirmed</dd></div><div><dt>Materials</dt><dd id="summary-materials">Not confirmed</dd></div></dl>
-          <div class="summary-actions"><a id="open-source-message" class="source-link" href="#original-message">View original client message</a><button id="copy-review-summary" type="button" class="text-button">Copy review summary</button></div><p id="copy-review-status" class="copy-status" aria-live="polite"></p>
-          <div class="demo-tools"><label>Load a synthetic demo scenario<select id="demo-scenario"><option value="">Choose a scenario</option><option value="missing">Missing information / hold</option><option value="candidate">Potential candidate</option><option value="insufficient">Insufficient capacity</option><option value="friday">Ambiguous Friday</option></select></label><button id="load-demo-scenario" type="button" class="text-button">Load scenario</button></div>
+          <div class="summary-actions"><a id="open-source-message" class="source-link" href="#original-message">Review original request</a><button id="copy-review-summary" type="button" class="text-button">Copy review summary</button></div><p id="copy-review-status" class="copy-status" aria-live="polite"></p>
+          <details class="demo-tools"><summary>Load a synthetic demo scenario</summary><div class="demo-tools-content"><label>Scenario<select id="demo-scenario"><option value="">Choose a scenario</option><option value="missing">Missing information / hold</option><option value="candidate">Potential candidate</option><option value="insufficient">Insufficient capacity</option><option value="friday">Ambiguous Friday</option></select></label><button id="load-demo-scenario" type="button" class="text-button">Load scenario</button></div></details>
         </section>
 
         <section class="blockers-panel" aria-labelledby="blockers-heading">
@@ -47,7 +48,7 @@
           <h2 id="decision-heading">Record next step</h2>
           <p class="hint">A hold can be recorded without an estimate or deadline. Candidate selection remains unavailable until a current capacity check is complete.</p>
           <form id="review-form">
-            <label>Potential candidate<select id="candidate" disabled><option value="">Capacity not assessed</option></select></label>
+            <label>Potential candidate<select id="candidate" disabled aria-describedby="candidate-guidance"><option value="">Capacity not assessed</option></select></label><p id="candidate-guidance" class="field-guidance">Run the capacity check before choosing a potential candidate.</p>
             <label class="commitment-review"><input id="confirm-schedule" type="checkbox" disabled> <span>I checked this candidate's schedule and dependencies and confirmed that the required work can be completed before the deadline.</span></label>
             <label class="hold-label"><input id="hold" type="checkbox"> Put this request on hold</label>
             <label>Decision note / follow-up<textarea id="decision-note" required placeholder="Example: Hold until the client confirms the deadline and supplies approved assets."></textarea></label>
@@ -58,7 +59,7 @@
         </section>
 
         <details id="original-message" class="source-details">
-          <summary>Original client message</summary>
+          <summary>Original request and AI review</summary>
           <label>Client request text<textarea id="client-request" maxlength="12000">Please create campaign graphics for our spring launch. The final deadline and whether approved copy and product photos will be supplied are still being confirmed.</textarea></label>
           <p class="hint">This is visible for review. Choosing interpretation sends only this text and the extraction schema to OpenAI; team data is never sent.</p>
           <button id="interpret-button" type="button">Interpret message</button><p id="interpret-status" class="decision-message" aria-live="polite"></p>
@@ -68,7 +69,7 @@
     </section>
 
     <details id="request-editor" class="request-editor">
-      <summary>Edit request details</summary>
+      <summary>Request details and capacity check</summary>
       <div class="request-editor-content">
         <p class="hint">Use confirmed information only. Unknown fields can remain blank while you record a hold.</p>
         <label>Request title<input id="request-title" value="Spring launch graphics"></label>

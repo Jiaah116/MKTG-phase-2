@@ -17,7 +17,7 @@ function readJson(request) {
   });
 }
 async function interpret(request, response, fetchImpl) {
-  if (!process.env.OPENAI_API_KEY) return sendJson(response, 503, { error: 'AI interpretation is not configured locally.' });
+  if (!process.env.OPENAI_API_KEY) return sendJson(response, 503, { error: 'AI interpretation is not configured for this deployment.' });
   let input;
   try { input = await readJson(request); } catch { return sendJson(response, 400, { error: 'Provide valid request text.' }); }
   const requestText = typeof input.requestText === 'string' ? input.requestText.trim() : '';

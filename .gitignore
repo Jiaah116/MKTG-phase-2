@@ -10,3 +10,5 @@ yarn-debug.log*
 .codex/
 .cursor/
 skills-lock.json
+
+.vercel
