@@ -5,6 +5,24 @@
 | **HOLD-01 — Spring launch graphics.** Synthetic request with an unconfirmed deadline and unconfirmed availability of approved copy and product photos. | Flag the deadline and materials as unconfirmed. Keep candidate selection unavailable and allow the manager to record a hold with a follow-up note. | TeamFit marked the deadline and materials as unconfirmed. The hold draft asked about both. Candidate selection remained unavailable. After the manager added the draft and recorded the hold, TeamFit confirmed the hold for the current session. | Pending. Manual review has not yet been run. | Treating the deadline or materials as confirmed could lead to an assignment or a client commitment before the team knows whether it can deliver. | No code changes were made during this test. |
 
 
+## Manual baseline comparison and participant findings
+
+The following three comparisons used a manual review as the baseline and TeamFit as the intervention. Times were reported by the participants/test organizer in seconds. The request text, workload sheet, task order, and whether the same request was used in both methods were not recorded; therefore these are exploratory observations, not a controlled estimate of time savings. The feedback below is paraphrased from the participants' reported observations.
+
+| Participant and date | Manual baseline | TeamFit | Details caught / response-quality observation | Result and implication |
+| --- | ---: | ---: | --- | --- |
+| Project manager, 10-20-person group; November 11 (year not recorded) | 216 seconds | 75 seconds | Valued the AI-assisted detail review with human authorization, saying it reduced concern about missing information. Reported not realizing how long the manual process took until using TeamFit. Requested an extension/integration for Microsoft Teams or Slack. | TeamFit reached a usable next step 141 seconds sooner in this run. Test integration fit and preserve human approval in a future pilot. |
+| HR manager, 15-person group; November 11 (year not recorded) | 197 seconds | 88 seconds | Missed one piece of information in the manual review, which they said can happen in their work. Liked the AI assistance, but initially needed time to understand the TeamFit workflow. | TeamFit reached a usable next step 109 seconds sooner in this run. Improve onboarding and make the workflow easier to understand on first use. |
+| IT manager; November 10 (year not recorded) | 230 seconds | 83 seconds | Liked the system and the ability to assist and visualize availability. Raised a concern about how workload would be calculated in real use. | TeamFit reached a usable next step 147 seconds sooner in this run. Validate real-workload inputs and calculation rules before a real pilot. |
+
+Across these three exploratory runs, manual review totaled 643 seconds and TeamFit totaled 246 seconds (397 seconds less in total). This comparison does **not** establish a generalizable time-saving claim because the sample is small and the test conditions were not fully controlled. It does support the next tests: standardize comparable synthetic requests, counterbalance method order, define an explicit detail-caught checklist before the test, and test a real-workload integration assumption.
+
+### Feedback-led revision
+
+| Finding | Revision made | Expected result | Retest status |
+| --- | --- | --- | --- |
+| The HR manager needed time to understand the TeamFit workflow. | Added an optional first-review guide with three decision steps, a direct link to the synthetic missing-information example, and hide/show controls. | A first-time user can understand whether to prepare a hold note or check capacity without live explanation. | Retested with stakeholder 2, the HR manager who raised the concern. They viewed the final version, reported that they liked it, and said they clearly understood when to hold a request, when to check capacity, and that a potential candidate is not an assignment; the manager makes the final staffing decision. The retest date and task-completion time were not recorded. |
+
 ## Initial Manual Browser Checks
 
 These checks used synthetic scenarios in Chrome. The OpenAI interpretation feature was not run.

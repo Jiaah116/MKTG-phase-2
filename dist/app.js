@@ -93,6 +93,11 @@
     $('#request-editor').open = true;
   }
 
+  function setFirstReviewGuide(visible) {
+    $('#first-review-guide').hidden = !visible;
+    $('#show-first-review-guide').hidden = visible;
+  }
+
   function renderDecisionState() {
     const candidate = $('#candidate'), guidance = $('#candidate-guidance'), qualified = latestResults.filter((item) => item.status === 'qualified');
     resetScheduleConfirmation();
@@ -142,6 +147,7 @@
   $('#copy-ai-draft').addEventListener('click', () => { const result = TeamFitReview.copySelectedFacts({ draft: activeDraft || {}, selectedFacts: [...$('#draft-facts').querySelectorAll('input[type="checkbox"][data-kind]:checked')].map((input) => ({ kind: input.dataset.kind, index: Number(input.dataset.index) })), existingDescription: $('#description').value, allowReplace: $('#replace-description').checked, approved: Boolean(activeDraft && review.isApproved($('#client-request').value.trim())) }); $('#copy-status').textContent = result.message; $('#copy-status').classList.toggle('error-message', !result.changed); if (!result.changed) return; $('#description').value = result.description; invalidateCapacityAssessment(); if (result.deadline) { $('#deadline').value = result.deadline; $('#deadline').dispatchEvent(new Event('change')); } });
 
   $('#prepare-hold-note').addEventListener('click', prepareHoldNote); $('#add-hold-draft').addEventListener('click', addHoldDraftToNote); $('#copy-review-summary').addEventListener('click', copyReviewSummary); $('#load-demo-scenario').addEventListener('click', loadDemoScenario);
+  $('#guide-load-hold').addEventListener('click', () => { $('#demo-scenario').value = 'missing'; loadDemoScenario(); $('#blockers-heading').scrollIntoView({ behavior: 'smooth', block: 'start' }); }); $('#hide-first-review-guide').addEventListener('click', () => setFirstReviewGuide(false)); $('#show-first-review-guide').addEventListener('click', () => setFirstReviewGuide(true));
   $('#open-source-message').addEventListener('click', (event) => { event.preventDefault(); const source = $('#original-message'); source.open = true; source.scrollIntoView({ behavior: 'smooth', block: 'start' }); requestAnimationFrame(() => source.querySelector('summary').focus({ preventScroll: true })); });
   $('#decision-note').addEventListener('input', clearDecisionMessage); $('#hold').addEventListener('change', () => { resetScheduleConfirmation(); updateScheduleConfirmation(); clearDecisionMessage(); }); $('#candidate').addEventListener('change', () => { resetScheduleConfirmation(); updateScheduleConfirmation(); clearDecisionMessage(); }); $('#confirm-schedule').addEventListener('change', () => { scheduleConfirmationState.set($('#confirm-schedule').checked); clearDecisionMessage(); });
   [$('#request-title'), $('#description'), $('#skill'), $('#hours'), $('#confirm-hours'), $('#materials')].forEach((field) => field.addEventListener('input', () => invalidateCapacityAssessment()));
