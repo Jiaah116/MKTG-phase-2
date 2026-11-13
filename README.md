@@ -82,6 +82,10 @@ The offline Node tests cover normal, insufficient-capacity, missing-information,
 - **Teammate testing:** [docs/teamfit-teammate-guide.md](docs/teamfit-teammate-guide.md) explains how a participant can compare a manual workflow with TeamFit and provide feedback. Case materials, assignments, response forms, and slides are shared separately by the test organizer. [docs/teamfit-stakeholder-walkthrough.md](docs/teamfit-stakeholder-walkthrough.md) provides a separate guide for an agency or project-manager walkthrough.
 - **Not yet verified:** No paid live OpenAI interpretation request is run by the automated suite. The project has not been independently user-tested or validated for business outcomes, time savings, real staff schedules, leave, holidays, or external scheduling integrations.
 
+## Team contributions
+
+The team’s documented contributions are available in [evidence/team-contributions.md](evidence/team-contributions.md).
+
 ## Repository safety
 
 `.env`, `.env.*`, dependency folders, coverage output, and common local log files are ignored. `.env.example` is intentionally tracked and contains only an empty `OPENAI_API_KEY=` placeholder.
